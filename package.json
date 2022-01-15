@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "esbuild --bundle src/app.js --outfile=./www/main.js",
+    "dev": "esbuild --bundle src/app.js --outfile=./www/main.js --servedir=./www"
+  },
+  "dependencies": {
+    "esbuild": "^0.14.11"
+  }
+}
