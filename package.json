@@ -4,6 +4,7 @@
     "dev": "esbuild --bundle src/app.js --outfile=./www/main.js --servedir=./www"
   },
   "dependencies": {
-    "esbuild": "^0.14.11"
+    "esbuild": "^0.14.11",
+    "gsap": "^3.9.1"
   }
 }
