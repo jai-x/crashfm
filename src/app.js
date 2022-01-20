@@ -1,4 +1,5 @@
 import { gsap } from "gsap";
+import stations from "./stations.js";
 
 const select = (str) => document.querySelector(str);
 
@@ -11,8 +12,6 @@ const elemNowPlaying    = select(".now-playing");
 const elemProgressBar   = select(".progress-bar");
 const elemLogo          = select(".logo");
 const elemBackground    = select(".background");
-
-const stations = require("./stations.json");
 
 let tracks = []
 let unplayed = [];
