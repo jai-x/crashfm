@@ -1,7 +1,10 @@
 import { gsap } from "gsap";
 import stations from "./stations.js";
+//import motds from "./motds.js";
+import motds from "./motds_emoji.js";
 
 const select = (str) => document.querySelector(str);
+const selectAll = (str) => document.querySelectorAll(str);
 
 const elemTrackStatic   = select("#track-static");
 const elemTrackMusic    = select("#track-music");
@@ -12,12 +15,65 @@ const elemNowPlaying    = select(".now-playing");
 const elemProgressBar   = select(".progress-bar");
 const elemLogo          = select(".logo");
 const elemBackground    = select(".background");
+const elemTickerBody    = select(".ticker");
+const elemTickerMove    = select(".ticker-move");
+const elemTickerRows    = selectAll(".ticker-row");
 
 let tracks = []
 let unplayed = [];
 let nowPlaying = null;
 let progressAnim = null;
 let loading = false;
+let tickerAnim = null;
+
+function loadMotds(motds) {
+  const makeDiv = (cssClass, text) => {
+    const e = document.createElement("div");
+    e.classList.add(cssClass);
+    const txt = document.createTextNode(text);
+    e.appendChild(txt);
+    return e;
+  }
+
+  shuffled = gsap.utils.shuffle(new Array(...motds));
+
+  const elems0 = shuffled.reduce((e, m) => {
+    e.push(makeDiv("ticker-message", m));
+    e.push(makeDiv("ticker-gap", "•"));
+    return e;
+  }, []);
+  const elems1 = elems0.map((e) => e.cloneNode(true));
+
+  elemTickerRows[0].append(...elems0);
+  elemTickerRows[1].append(...elems1);
+
+  const widthTicker = elemTickerBody.offsetWidth;
+  const widthRow = elemTickerRows[0].offsetWidth
+
+  gsap.set(elemTickerMove, { x: widthTicker });
+
+  const speed = 100;
+  const durations = {
+    init: widthTicker / speed,
+    loop: widthRow / speed,
+  };
+
+  const tl = gsap.timeline({ paused: true });
+
+  tl.to(elemTickerMove, {
+    duration: durations.init,
+    ease: 'linear',
+    x: 0,
+  });
+  tl.to(elemTickerMove, {
+    duration: durations.loop,
+    ease: 'linear',
+    x: -widthRow,
+    repeat: -1,
+  });
+
+  tickerAnim = tl;
+}
 
 function updateBackgroundImage(elem, imgSrc) {
   const tl = gsap.timeline({paused: true});
@@ -46,6 +102,7 @@ function start() {
     onComplete: () => { elemSplashStart.remove(); }
   });
   trackNext();
+  tickerAnim.play();
 }
 
 function startProgress() {
@@ -114,6 +171,7 @@ function setup() {
   elemSplashStart.addEventListener("click", start);
   elemNextButton.addEventListener("click", trackNext);
 
+  loadMotds(motds);
   loadStation("burnout3"); // default station
 
   elemSplashLoading.remove();
