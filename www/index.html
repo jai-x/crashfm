@@ -2,14 +2,31 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Crash FM | Live</title>
-    <link rel="stylesheet" href="/main.css">
-    <script src="/main.js" defer></script>
+    <link rel="icon" type="image/gif" href="/static/explosive.gif">
+    <link rel="stylesheet" href="/static/main.css">
+    <script src="/static/main.js" defer></script>
   </head>
   <body>
     <main>
-      <div class="background" id="bg-back"></div>
-      <div class="background" id="bg-front"></div>
+      <div class="background"></div>
+      <div class="content">
+        <div class="viz">
+          <div class="logo"></div>
+        </div>
+        <div class="progress">
+          <div class="progress-bar"></div>
+        </div>
+        <div class="info">
+          <div class="now-playing"></div>
+          <div class="next-button" id="ctrl-next"></div>
+        </div>
+      </div>
+      <div class="splash-start"><span>Click anywhere to begin</span></div>
+      <div class="splash-loading"><span>Loading...</span></div>
+      <audio id="track-static" preload="auto" loop="true" src="/static/static.mp3"></audio>
+      <audio id="track-music" preload="auto"></audio>
     </main>
   </body>
 </html>

@@ -1,4 +1,4 @@
 node_modules/
-www/main.js
+www/static/main.js
 *.mp3
 *.png
