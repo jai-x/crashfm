@@ -1,5 +1,5 @@
 import { gsap } from "gsap";
-import stations from "./stations.js";
+import stations from "./stations";
 //import motds from "./motds.js";
 import motds from "./motds_emoji.js";
 
