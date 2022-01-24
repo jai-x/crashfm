@@ -76,12 +76,13 @@ const loadMotds = (messages) => {
   tickerAnim = tl;
 };
 
-const updateBackgroundImage = (elem, imgSrc) => {
+const updateImgSrc = (imgElem, imgSrc) => {
   const tl = gsap.timeline({ paused: true });
 
-  tl.to(elem, { opacity: 0, duration: 0.25 });
-  tl.set(elem, { backgroundImage: `url(${imgSrc})` });
-  tl.to(elem, { opacity: 1, duration: 0.25 });
+  tl.to(imgElem, { opacity: 0, duration: 0.25 });
+  tl.set(imgElem, { src: imgSrc });
+  tl.to(imgElem, { opacity: 1, duration: 0.25 });
+  tl.set(imgElem, { clearProps: 'all' });
 
   tl.play();
 };
@@ -89,8 +90,8 @@ const updateBackgroundImage = (elem, imgSrc) => {
 const loadStation = (name) => {
   const station = stations[name];
 
-  updateBackgroundImage(elemLogo, station.logo);
-  updateBackgroundImage(elemBackground, station.background);
+  updateImgSrc(elemLogo, station.logo);
+  updateImgSrc(elemBackground, station.background);
 
   unplayed = [];
   tracks = station.tracks;
