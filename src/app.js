@@ -1,45 +1,45 @@
-import { gsap } from "gsap";
-import stations from "./stations";
-//import motds from "./motds.js";
-import motds from "./motds_emoji.js";
+import { gsap } from 'gsap';
+import stations from './stations';
+// import motds from "./motds.js";
+import motds from './motds_emoji';
 
 const select = (str) => document.querySelector(str);
 const selectAll = (str) => document.querySelectorAll(str);
 
-const elemTrackStatic   = select("#track-static");
-const elemTrackMusic    = select("#track-music");
-const elemSplashLoading = select(".splash-loading");
-const elemSplashStart   = select(".splash-start");
-const elemNextButton    = select(".next-button");
-const elemNowPlaying    = select(".now-playing");
-const elemProgressBar   = select(".progress-bar");
-const elemLogo          = select(".logo");
-const elemBackground    = select(".background");
-const elemTickerBody    = select(".ticker");
-const elemTickerMove    = select(".ticker-move");
-const elemTickerRows    = selectAll(".ticker-row");
+const elemTrackStatic = select('#track-static');
+const elemTrackMusic = select('#track-music');
+const elemSplashLoading = select('.splash-loading');
+const elemSplashStart = select('.splash-start');
+const elemNextButton = select('.next-button');
+const elemNowPlaying = select('.now-playing');
+const elemProgressBar = select('.progress-bar');
+const elemLogo = select('.logo');
+const elemBackground = select('.background');
+const elemTickerBody = select('.ticker');
+const elemTickerMove = select('.ticker-move');
+const elemTickerRows = selectAll('.ticker-row');
 
-let tracks = []
+let tracks = [];
 let unplayed = [];
 let nowPlaying = null;
 let progressAnim = null;
 let loading = false;
 let tickerAnim = null;
 
-function loadMotds(motds) {
+function loadMotds(messages) {
   const makeDiv = (cssClass, text) => {
-    const e = document.createElement("div");
+    const e = document.createElement('div');
     e.classList.add(cssClass);
     const txt = document.createTextNode(text);
     e.appendChild(txt);
     return e;
-  }
+  };
 
-  shuffled = gsap.utils.shuffle(new Array(...motds));
+  const shuffled = gsap.utils.shuffle(new Array(...messages));
 
   const elems0 = shuffled.reduce((e, m) => {
-    e.push(makeDiv("ticker-message", m));
-    e.push(makeDiv("ticker-gap", "•"));
+    e.push(makeDiv('ticker-message', m));
+    e.push(makeDiv('ticker-gap', '•'));
     return e;
   }, []);
   const elems1 = elems0.map((e) => e.cloneNode(true));
@@ -48,7 +48,7 @@ function loadMotds(motds) {
   elemTickerRows[1].append(...elems1);
 
   const widthTicker = elemTickerBody.offsetWidth;
-  const widthRow = elemTickerRows[0].offsetWidth
+  const widthRow = elemTickerRows[0].offsetWidth;
 
   gsap.set(elemTickerMove, { x: widthTicker });
 
@@ -76,7 +76,7 @@ function loadMotds(motds) {
 }
 
 function updateBackgroundImage(elem, imgSrc) {
-  const tl = gsap.timeline({paused: true});
+  const tl = gsap.timeline({ paused: true });
 
   tl.to(elem, { opacity: 0, duration: 0.25 });
   tl.set(elem, { backgroundImage: `url(${imgSrc})` });
@@ -95,23 +95,13 @@ function loadStation(name) {
   tracks = station.tracks;
 }
 
-function start() {
-  gsap.to(elemSplashStart, {
-    opacity: 0,
-    duration: 0.5,
-    onComplete: () => { elemSplashStart.remove(); }
-  });
-  trackNext();
-  tickerAnim.play();
-}
-
 function startProgress() {
   if (progressAnim) {
     return;
   }
   progressAnim = gsap.to(elemProgressBar, {
-    width: "100%",
-    ease: "linear",
+    width: '100%',
+    ease: 'linear',
     duration: elemTrackMusic.duration,
   });
 }
@@ -122,16 +112,16 @@ function stopProgress() {
   }
   progressAnim.kill();
   progressAnim = null;
-  gsap.set(elemProgressBar, { clearProps: "all" });
+  gsap.set(elemProgressBar, { clearProps: 'all' });
 }
 
 function setLoading() {
   loading = true;
-  gsap.set(elemNextButton, { opacity: 0.5, cursor: "not-allowed" });
+  gsap.set(elemNextButton, { opacity: 0.5, cursor: 'not-allowed' });
 }
 
 function stopLoading() {
-  gsap.set(elemNextButton, { clearProps: "all" });
+  gsap.set(elemNextButton, { clearProps: 'all' });
   loading = false;
 }
 
@@ -145,7 +135,7 @@ function trackNext() {
   stopProgress();
   elemTrackStatic.play();
 
-  elemNowPlaying.innerText = "Loading...";
+  elemNowPlaying.innerText = 'Loading...';
 
   if (unplayed.length === 0) {
     unplayed = new Array(...tracks);
@@ -165,14 +155,24 @@ function trackPlay() {
   setTimeout(stopLoading, 250); // prevents button spamming
 }
 
+function start() {
+  gsap.to(elemSplashStart, {
+    opacity: 0,
+    duration: 0.5,
+    onComplete: () => { elemSplashStart.remove(); },
+  });
+  trackNext();
+  tickerAnim.play();
+}
+
 function setup() {
-  elemTrackMusic.addEventListener("canplay", () => { setTimeout(trackPlay, 1000); });
-  elemTrackMusic.addEventListener("ended", trackNext);
-  elemSplashStart.addEventListener("click", start);
-  elemNextButton.addEventListener("click", trackNext);
+  elemTrackMusic.addEventListener('canplay', () => { setTimeout(trackPlay, 1000); });
+  elemTrackMusic.addEventListener('ended', trackNext);
+  elemSplashStart.addEventListener('click', start);
+  elemNextButton.addEventListener('click', trackNext);
 
   loadMotds(motds);
-  loadStation("burnout3"); // default station
+  loadStation('burnout3'); // default station
 
   elemSplashLoading.remove();
 }

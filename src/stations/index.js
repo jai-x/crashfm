@@ -1,5 +1,5 @@
-import burnout3 from "./burnout3.js";
+import burnout3 from './burnout3';
 
 export default {
-  burnout3: burnout3,
-}
+  burnout3,
+};
