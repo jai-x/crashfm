@@ -1,10 +1,13 @@
 {
+  "private": true,
   "scripts": {
     "build": "esbuild --bundle src/app.js --outfile=./www/static/main.js --minify",
-    "dev": "esbuild --bundle src/app.js --outfile=./www/static/main.js --servedir=./www"
+    "dev": "esbuild --bundle src/app.js --outfile=./www/static/main.js --servedir=./www",
+    "striptags": "node ./bin/striptags.mjs"
   },
   "dependencies": {
     "esbuild": "^0.14.11",
-    "gsap": "^3.9.1"
+    "gsap": "^3.9.1",
+    "node-id3": "^0.2.3"
   }
 }
