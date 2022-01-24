@@ -22,7 +22,7 @@ const elemTickerRows = selectAll('.ticker-row');
 let tracks = [];
 let unplayed = [];
 let nowPlaying = null;
-let progressAnim = null;
+let progressInterval = null;
 let loading = false;
 let tickerAnim = null;
 
@@ -97,22 +97,27 @@ const loadStation = (name) => {
 };
 
 const startProgress = () => {
-  if (progressAnim) {
+  if (progressInterval) {
     return;
   }
-  progressAnim = gsap.to(elemProgressBar, {
-    width: '100%',
-    ease: 'linear',
-    duration: elemTrackMusic.duration,
-  });
+
+  const updateProgress = (bar, track) => {
+    const percent = `${((track.currentTime / track.duration) * 100).toFixed(3)}%`;
+    gsap.set(bar, { width: percent});
+  };
+
+  progressInterval = setInterval(() => {
+    updateProgress(elemProgressBar, elemTrackMusic);
+  }, 150);
 };
 
 const stopProgress = () => {
-  if (!progressAnim) {
+  if (!progressInterval) {
     return;
   }
-  progressAnim.kill();
-  progressAnim = null;
+
+  clearInterval(progressInterval);
+  progressInterval = null;
   gsap.set(elemProgressBar, { clearProps: 'all' });
 };
 
