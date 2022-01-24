@@ -26,7 +26,7 @@ let progressAnim = null;
 let loading = false;
 let tickerAnim = null;
 
-function loadMotds(messages) {
+const loadMotds = (messages) => {
   const makeDiv = (cssClass, text) => {
     const e = document.createElement('div');
     e.classList.add(cssClass);
@@ -74,9 +74,9 @@ function loadMotds(messages) {
   });
 
   tickerAnim = tl;
-}
+};
 
-function updateBackgroundImage(elem, imgSrc) {
+const updateBackgroundImage = (elem, imgSrc) => {
   const tl = gsap.timeline({ paused: true });
 
   tl.to(elem, { opacity: 0, duration: 0.25 });
@@ -84,9 +84,9 @@ function updateBackgroundImage(elem, imgSrc) {
   tl.to(elem, { opacity: 1, duration: 0.25 });
 
   tl.play();
-}
+};
 
-function loadStation(name) {
+const loadStation = (name) => {
   const station = stations[name];
 
   updateBackgroundImage(elemLogo, station.logo);
@@ -94,9 +94,9 @@ function loadStation(name) {
 
   unplayed = [];
   tracks = station.tracks;
-}
+};
 
-function startProgress() {
+const startProgress = () => {
   if (progressAnim) {
     return;
   }
@@ -105,28 +105,28 @@ function startProgress() {
     ease: 'linear',
     duration: elemTrackMusic.duration,
   });
-}
+};
 
-function stopProgress() {
+const stopProgress = () => {
   if (!progressAnim) {
     return;
   }
   progressAnim.kill();
   progressAnim = null;
   gsap.set(elemProgressBar, { clearProps: 'all' });
-}
+};
 
-function setLoading() {
+const setLoading = () => {
   loading = true;
   gsap.set(elemNextButton, { opacity: 0.5, cursor: 'not-allowed' });
-}
+};
 
-function stopLoading() {
+const stopLoading = () => {
   gsap.set(elemNextButton, { clearProps: 'all' });
   loading = false;
-}
+};
 
-function trackNext() {
+const trackNext = () => {
   if (loading) {
     return;
   }
@@ -146,17 +146,17 @@ function trackNext() {
   nowPlaying = unplayed.pop();
 
   elemTrackMusic.src = nowPlaying.path;
-}
+};
 
-function trackPlay() {
+const trackPlay = () => {
   elemNowPlaying.innerText = `${nowPlaying.artist} - ${nowPlaying.title}`;
   elemTrackStatic.pause();
   elemTrackMusic.play();
   startProgress();
   setTimeout(stopLoading, 250); // prevents button spamming
-}
+};
 
-function start() {
+const start = () => {
   gsap.to(elemSplashStart, {
     opacity: 0,
     duration: 0.5,
@@ -164,9 +164,9 @@ function start() {
   });
   trackNext();
   tickerAnim.play();
-}
+};
 
-function setup() {
+const setup = () => {
   elemTrackMusic.addEventListener('canplay', () => { setTimeout(trackPlay, 1000); });
   elemTrackMusic.addEventListener('ended', trackNext);
   elemSplashStart.addEventListener('click', start);
@@ -176,6 +176,6 @@ function setup() {
   loadStation('burnout3'); // default station
 
   elemSplashLoading.remove();
-}
+};
 
 setup();
