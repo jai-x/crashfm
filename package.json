@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "build": "esbuild --bundle src/app.js --outfile=./www/static/main.js --minify",
+    "build": "esbuild --bundle src/app.js --outfile=./www/static/main.js --minify --legal-comments=none --analyze",
     "dev": "esbuild --bundle src/app.js --outfile=./www/static/main.js --servedir=./www",
     "striptags": "node ./bin/striptags.mjs"
   },
