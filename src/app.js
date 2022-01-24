@@ -52,7 +52,8 @@ function loadMotds(messages) {
 
   gsap.set(elemTickerMove, { x: widthTicker });
 
-  const speed = 100;
+  const speed = 225; // px/second ?
+
   const durations = {
     init: widthTicker / speed,
     loop: widthRow / speed,

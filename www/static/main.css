@@ -92,7 +92,7 @@ main {
 
 .info {
   width: 100%;
-  height: 45px;
+  height: 50px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -120,7 +120,7 @@ main {
 .ticker {
   background: rgba(0, 0, 0, 0.6);
   width: 100%;
-  height: 45px;
+  height: 50px;
   position: relative;
 }
 
@@ -131,6 +131,7 @@ main {
   flex-direction: row;
   align-items: center;
   padding-bottom: 5px;
+  user-select: none;
 }
 
 .ticker-row {
@@ -138,6 +139,7 @@ main {
   display: flex;
   flex-direction: row;
   align-items: center;
+  opacity: 0.8;
 }
 
 .ticker-message {
@@ -147,5 +149,5 @@ main {
 
 .ticker-gap {
   height: fit-content;
-  padding: 0 15px;
+  padding: 0 30px;
 }
