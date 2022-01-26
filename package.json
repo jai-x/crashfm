@@ -1,15 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "build": "esbuild --bundle src/app.js --outfile=./www/static/main.js --minify --legal-comments=none --analyze",
+    "build": "esbuild --bundle src/app.js --outfile=./www/static/main.js --minify --legal-comments=none --analyze --drop:console",
     "dev": "esbuild --bundle src/app.js --outfile=./www/static/main.js --servedir=./www",
     "striptags": "node ./bin/striptags.mjs"
   },
-  "dependencies": {
-    "gsap": "^3.9.1",
-    "node-id3": "^0.2.3"
-  },
   "devDependencies": {
-    "esbuild": "^0.14.11"
+    "esbuild": "^0.14.11",
+    "gsap": "^3.9.1",
+    "lodash": "^4.17.21",
+    "mithril": "^2.0.4",
+    "node-id3": "^0.2.3"
   }
 }

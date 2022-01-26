@@ -10,7 +10,6 @@
   box-sizing: border-box;
   color: white;
   font-family: "Segoe UI Light";
-  font-size: 26px;
 }
 
 html, body {
@@ -37,7 +36,7 @@ main {
   object-fit: cover;
 }
 
-.splash-loading, .splash-start {
+.splash {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -47,13 +46,14 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-size: 35px;
 }
 
 .content {
-  width: 100%;
-  height: 100%;
   position: absolute;
   top: 0; left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: end;
@@ -61,17 +61,38 @@ main {
 
 .selector {
   flex-grow: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   height: 100%;
+  position: relative;
+}
+
+.logo-container {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo {
   width: 90%;
   max-width: 600px;
   height: auto;
+}
+
+.carousel-container {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .progress {
@@ -94,6 +115,8 @@ main {
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
+  font-size: 25px;
+  overflow: hidden;
 }
 
 .now-playing {
@@ -105,8 +128,13 @@ main {
 
 .next-button {
   cursor: pointer;
-  height: auto;
-  width: 55px;
+  width: auto;
+  height: 46px;
+}
+
+.next-button-loading {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .ticker {
@@ -114,6 +142,7 @@ main {
   width: 100%;
   height: 50px;
   position: relative;
+  font-size: 23px;
 }
 
 .ticker-move {

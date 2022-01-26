@@ -16,6 +16,10 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://crashfm.live/">
     <meta property="og:image" content="https://crashfm.live/static/explosive.gif">
+    <!-- Preloads -->
+    <link rel="preload" href="/static/segoe_ui_light.ttf" as="font" crossorigin>
+    <link rel="preload" href="/static/next.png" as="image">
+    <link rel="preload" href="/static/static.mp3" as="audio">
     <!-- Page setup -->
     <title>Crash FM | Live</title>
     <link rel="icon" type="image/gif" href="/static/explosive.gif">
@@ -24,29 +28,9 @@
   </head>
   <body>
     <main>
-      <img class="background"></img>
-      <div class="content">
-        <div class="selector">
-          <img class="logo"></img>
-        </div>
-        <div class="progress">
-          <div class="progress-bar"></div>
-        </div>
-        <div class="info">
-          <div class="now-playing"></div>
-          <img class="next-button" src="/static/next.png"></img>
-        </div>
-        <div class="ticker">
-          <div class="ticker-move">
-            <div class="ticker-row"></div>
-            <div class="ticker-row"></div>
-          </div>
-        </div>
+      <div class="splash">
+        <span>Loading...</span>
       </div>
-      <div class="splash-start"><span>Click anywhere to begin</span></div>
-      <div class="splash-loading"><span>Loading...</span></div>
-      <audio id="track-static" preload="auto" loop="true" src="/static/static.mp3"></audio>
-      <audio id="track-music" preload="auto"></audio>
     </main>
   </body>
 </html>
