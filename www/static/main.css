@@ -172,3 +172,22 @@ main {
   height: fit-content;
   padding: 0 30px;
 }
+
+.world-row {
+  position: relative;
+  top: 0; left: 0;
+  height: 65px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100px;
+}
+
+.world-img {
+  height: 100%;
+}
+
+.world-text {
+  font-size: 21px;
+  padding-bottom: 5px;
+}

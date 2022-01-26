@@ -212,6 +212,17 @@ class Ticker {
   }
 }
 
+class World {
+  view() {
+    return m('.world-row', [
+      m('img.world-img', { src: '/static/world.png' }),
+      m('span.world-text', [
+        m('b', 'CrashFM.live')
+      ]),
+    ]);
+  }
+}
+
 class Main {
   view(vnode) {
     const { started, loading, np, progress, station: { background, logo } } = vnode.attrs.cfm;
@@ -223,7 +234,10 @@ class Main {
       ],
       m('.content', [
         m('.selector', [
-          m(Logo, { logo, key: logo }),
+          m(World),
+          [
+            m(Logo, { logo, key: logo }),
+          ],
         ]),
         m(Progress, { loading, progress }),
         m(Info, { np, loading }),
