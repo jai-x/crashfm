@@ -156,7 +156,7 @@ class Progress {
     const { loading, progress } = vnode.attrs;
 
     if (!loading) {
-      setTimeout(m.redraw, 200);
+      setTimeout(redraw, 200);
     }
 
     return m('.progress', [
