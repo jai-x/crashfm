@@ -3,13 +3,10 @@ import mount from 'mithril/mount';
 import redraw from 'mithril/redraw';
 import gsap from 'gsap/index';
 
+import { shuffle } from './utils';
+
 import stations from './stations';
 import motds from './motds_emoji';
-
-const shuffle = (array) => {
-  const copy = new Array(...array);
-  return copy.sort((a, b) => 0.5 - Math.random());
-};
 
 class CrashFM {
   station;
@@ -61,9 +58,7 @@ class CrashFM {
 
     this.station = newStation;
     this.unplayed = [];
-
     console.log(`${this.constructor.name}: loadStation: loaded new station (${newStation.key})`);
-
     return true;
   }
 
