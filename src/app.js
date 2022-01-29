@@ -382,7 +382,7 @@ class Main {
 const cfm = new CrashFM(stations);
 const messages = shuffle(motds);
 
-cfm.loadStation('burnout3');
+cfm.loadStation(Object.keys(stations)[0]);
 
 document.addEventListener('DOMContentLoaded', () => {
   mount(document.body, { view: () => m(Main, { cfm, messages }) });
