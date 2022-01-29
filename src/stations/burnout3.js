@@ -1,4 +1,5 @@
 export default {
+  key: 'burnout3',
   name: 'Burnout 3: Takedown',
   logo: '/stations/burnout3/logo.png',
   background: '/stations/burnout3/background.jpg',

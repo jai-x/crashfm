@@ -13,8 +13,10 @@ const shuffle = (array) => {
 
 class CrashFM {
   station;
+  stations;
   started;
   loading;
+  selecting;
   np;
 
   constructor(stations) {
@@ -22,6 +24,7 @@ class CrashFM {
     this.station = {};
     this.started = false;
     this.loading = true;
+    this.selecting = false;
     this.np = {};
     this.unplayed = [];
 
@@ -48,12 +51,20 @@ class CrashFM {
     console.log(`${this.constructor.name}: loadStation`);
 
     const newStation = this.stations[name];
-    if(this.station === newStation) {
-      return;
+    if (!newStation ) {
+      return false;
+    }
+
+    if(this.station.key === newStation.key) {
+      return false;
     }
 
     this.station = newStation;
     this.unplayed = [];
+
+    console.log(`${this.constructor.name}: loadStation: loaded new station (${newStation.key})`);
+
+    return true;
   }
 
   loadNextTrack() {
@@ -84,6 +95,22 @@ class CrashFM {
     redraw();
   }
 
+  startSelect() {
+    console.log(`${this.constructor.name}: startSelect`);
+    if (this.selecting) {
+      return;
+    }
+    this.selecting = true;
+  }
+
+  stopSelect() {
+    console.log(`${this.constructor.name}: stopSelect`);
+    if (!this.selecting) {
+      return;
+    }
+    this.selecting = false;
+  }
+
   get progress() {
     if (this.loading) {
       return 0;
@@ -108,9 +135,7 @@ class Background {
 
 class Logo {
   view(vnode) {
-    return m('.logo-container', [
-      m('img.logo', { src: vnode.attrs.logo }),
-    ]);
+    return m('img.logo', { src: vnode.attrs.logo });
   }
 
   oncreate(vnode) {
@@ -118,7 +143,7 @@ class Logo {
   }
 
   onbeforeremove(vnode) {
-    return gsap.to(vnode.dom, { opacity: 0, duration: 0.25 }).then();
+    return gsap.to(vnode.dom, { opacity: 0, duration: 0.5 }).then();
   }
 }
 
@@ -223,27 +248,138 @@ class World {
   }
 }
 
+class CarouselScroll {
+  onint(vnode) {
+    const { station: { key } } = vnode.attrs;
+    this.activeStationKey = key;
+    this.scrollTimer = null;
+    this.shouldSelect = false;
+  }
+
+  view(vnode) {
+    const { stations } = vnode.attrs;
+    return m('.carousel-scroll', [
+      m('.carousel-gap'),
+      Object.entries(stations).map(([_, s]) =>
+        m('img.carousel-logo', { key: s.logo, src: s.logo })
+      ),
+      m('.carousel-gap'),
+    ]);
+  }
+
+  oncreate(vnode) {
+    this.updateScroll(vnode);
+
+    const { stations } = vnode.attrs;
+
+    const onScrollStop = () => {
+      if (!this.shouldSelect) {
+        return;
+      }
+
+      const scrollCoords = vnode.dom.getBoundingClientRect();
+      const scrollMiddle = scrollCoords.y + scrollCoords.height / 2;
+
+      const selectIndex = this.scrollChildren(vnode).findIndex(elem => {
+        const elemCoords = elem.getBoundingClientRect();
+        return scrollMiddle > elemCoords.y && scrollMiddle < elemCoords.y + elemCoords.height;
+      });
+
+      const newStationKey = Object.keys(stations)[selectIndex];
+      if (cfm.loadStation(newStationKey)) {
+        cfm.loadNextTrack();
+      }
+    };
+
+    const onScrollStart = () => {
+      if (this.scrollTimer) {
+        clearTimeout(this.scrollTimer);
+      }
+      this.scrollTimer = setTimeout(onScrollStop, 150);
+    };
+
+    vnode.dom.addEventListener('scroll', onScrollStart);
+  }
+
+  onupdate(vnode) {
+    this.shouldSelect = vnode.attrs.selecting;
+    this.updateScroll(vnode);
+  }
+
+  scrollChildren(vnode) {
+    // more than two padding + 1 elem
+    if (vnode.dom.children.length < 4) {
+      return [];
+    }
+    const ch = Array.from(vnode.dom.children);
+    ch.pop();
+    ch.shift();
+    return ch;
+  }
+
+  updateScroll(vnode) {
+    const { station: { key }, stations } = vnode.attrs;
+    if (this.activeStationKey === key) {
+      return;
+    }
+    this.activeStationKey = key;
+    const i = Object.keys(stations).findIndex((s) => this.activeStationKey === s);
+    this.scrollChildren(vnode)[i].scrollIntoView({block: 'center'});
+  }
+}
+
+class Carousel {
+  oninit(vnode) {
+    this.lastSelecting = false;
+  }
+
+  view(vnode) {
+    const { selecting, station, stations } = vnode.attrs;
+    return m('.carousel', { onclick: (e) => { e.stopPropagation(); cfm.stopSelect(); } }, [
+      m(CarouselScroll, { selecting, station, stations }),
+      m('.carousel-line.left'),
+      m('.carousel-line.right'),
+    ]);
+  }
+
+  oncreate(vnode) {
+    gsap.set(vnode.dom, { autoAlpha: 0 });
+  }
+
+  onupdate(vnode) {
+    const { selecting } = vnode.attrs;
+    if (this.lastSelecting === selecting) {
+      return;
+    }
+    this.lastSelecting = selecting;
+    if (selecting) {
+      gsap.to(vnode.dom, { autoAlpha: 1, ease: 'out.power4', duration: 0.25 });
+    } else {
+      gsap.to(vnode.dom, { autoAlpha: 0, ease: 'out.power4', duration: 0.5 });
+    }
+  }
+}
+
 class Main {
   view(vnode) {
-    const { started, loading, np, progress, station: { background, logo } } = vnode.attrs.cfm;
-    const messages = vnode.attrs.messages;
+    const {
+      cfm: { station, stations, started, loading, selecting, np, progress },
+      messages,
+    } = vnode.attrs;
 
     return m('main', [
-      [
-        m(Background, { background, key: background }),
-      ],
+      [ m(Background, { background: station.background, key: station.key }) ],
       m('.content', [
-        m('.selector', [
+        m('.selector', { onclick: () => cfm.startSelect() }, [
           m(World),
-          [
-            m(Logo, { logo, key: logo }),
-          ],
+          [ !selecting ? m(Logo, { logo: station.logo, key: station.key }) : '' ],
+          m(Carousel, { selecting, stations, station }),
         ]),
         m(Progress, { loading, progress }),
         m(Info, { np, loading }),
         m(Ticker, { messages, started }),
       ]),
-      (!started ? m(Splash) : ''),
+      [ !started ? m(Splash) : '' ],
     ]);
   }
 };
