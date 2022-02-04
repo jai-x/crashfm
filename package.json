@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "build": "esbuild --bundle src/app.js --outfile=./www/static/main.js --minify --legal-comments=none --analyze --drop:console",
-    "dev": "esbuild --bundle src/app.js --outfile=./www/static/main.js --servedir=./www",
+    "build": "esbuild src/app.js --outfile=./www/static/main.js --bundle --minify --legal-comments=none --analyze --drop:console",
+    "dev": "esbuild src/app.js --outfile=./www/static/main.js --bundle --sourcemap --servedir=./www",
     "striptags": "node ./bin/striptags.mjs"
   },
   "devDependencies": {
