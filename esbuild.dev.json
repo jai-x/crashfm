@@ -1,0 +1,7 @@
+{
+  "entry": "./src/app.js",
+  "outfile": "./www/static/main.js",
+  "bundle": true,
+  "sourcemap": true,
+  "servedir": "./www"
+}
