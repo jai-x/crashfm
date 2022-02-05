@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import fs from 'fs';
 import path from 'path';
 import id3 from 'node-id3';
