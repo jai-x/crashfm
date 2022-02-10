@@ -4,7 +4,6 @@ import redraw from 'mithril/redraw';
 import gsap from 'gsap/index';
 
 import { shuffle } from './utils';
-
 import stations from './stations';
 import motds from './motds_emoji';
 
@@ -355,6 +354,18 @@ class Carousel {
   }
 }
 
+class Selector {
+  view(vnode) {
+    const { selecting, station, stations } = vnode.attrs;
+
+    return m('.selector', { onclick: () => cfm.startSelect() }, [
+      m(World),
+      [ !selecting ? m(Logo, { logo: station.logo, key: station.key }) : '' ],
+      m(Carousel, { selecting, stations, station }),
+    ]);
+  }
+}
+
 class Main {
   view(vnode) {
     const {
@@ -365,11 +376,7 @@ class Main {
     return m('main', [
       [ m(Background, { background: station.background, key: station.key }) ],
       m('.content', [
-        m('.selector', { onclick: () => cfm.startSelect() }, [
-          m(World),
-          [ !selecting ? m(Logo, { logo: station.logo, key: station.key }) : '' ],
-          m(Carousel, { selecting, stations, station }),
-        ]),
+        m(Selector, { selecting, station, stations }),
         m(Progress, { loading, progress }),
         m(Info, { np, loading }),
         m(Ticker, { messages, started }),
