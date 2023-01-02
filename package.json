@@ -1,4 +1,5 @@
 {
+  "name": "crashfm-dot-live",
   "private": true,
   "scripts": {
     "build": "./bin/esbuildParse.mjs ./esbuild.build.json | xargs esbuild",
